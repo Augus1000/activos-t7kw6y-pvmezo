@@ -1,0 +1,102 @@
+#resume .date-actions{
+  background: rgb(3,51,200);
+background: linear-gradient(90deg, rgba(3,51,200,1) 0%, rgba(48,118,232,1) 38%, rgba(0,212,255,1) 100%);
+    padding: 15px;
+    color: #f0e6e6
+}
+#resume .date-actions i{
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 25px;
+
+
+background: #3076e8;
+}
+background-image{
+  opacity: .5;
+}
+#resume .date-actions i:hover{
+  background: #3076e8;
+}
+#resume .title-field{
+    color:#3076e8;
+    font-family: Arial;
+    font-weight: bold;
+
+}
+#resume .ng-star-inserted{
+  color:#000000;
+  font-family: Arial;
+  font-weight: bold;
+}
+
+#resume .header{
+  color:#000000;
+  
+}
+.body{
+  color:#534d4d;
+}
+
+#resume .registry .rounded-left{
+    border-top-left-radius: 0px !important;
+}
+
+
+
+#resume .registry .rounded-right{
+    border-top-right-radius: 0px !important;
+}
+
+#resume .total{
+    text-align: center;
+    border-radius: 4px;
+    font-size: 36px;
+    padding: 8px;
+color:#848080
+}
+.myOwnBg {
+  background-color: rgb(255, 255, 255);
+}
+button {
+  padding: 12px; 
+  background: #3076e8;
+  border: 0;
+  border-radius: 3px;
+ 
+  position: relative;
+}
+
+button:hover:after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 100%;
+  margin-left: 5px;
+  background: rgba(0,0,0,0.54);
+  padding: 12px;
+  border-radius: 3px;
+}
+[data-title]:hover:after {
+  opacity: 1;
+  transition: all 0.1s ease 0.5s;
+  visibility: visible;
+}
+[data-title]:after {
+  content: attr(data-title);
+  background-color: #00d4ff;
+  color: rgb(255, 255, 255);
+  font-size: 90%;
+  position: absolute;
+  padding: 1px 5px 2px 5px;
+  bottom: -1.6em;
+  left: 100%;
+  white-space: nowrap;
+  box-shadow: 1px 1px 3px #222222;
+  opacity: 0;
+  border: 1px solid #111111;
+  z-index: 99999;
+  visibility: hidden;
+}
+[data-title] {
+  position: relative;
+}

@@ -1,0 +1,305 @@
+
+<!-- Detalle para añadir un registro -->
+<app-add-registry
+  *ngIf="registrySelected"
+  
+  [registrySelected]="registrySelected"
+  (close)="closeDetailres($event)">
+  >
+</app-add-registry>
+
+
+<div class="row print-container"  style="background-color:white; " id="resume" *ngIf="showResume">
+  <div class="col-12 mt-4 mb-4" >
+
+    <!-- Filtro -->
+     <div class="row" >
+      <div class="col-12">
+        <app-filter [showDateStartEnd]="true" [listOriginal]="listRegistriesOriginal" (filter)="filter($event)">
+        </app-filter>
+      </div>
+    </div>
+
+    <!-- Total -->
+    <div *ngIf="this.newUser===administrator" class="container-fluid" style="position:center;  color: #d06444">
+      <div class="col-12 total mb-3" style="position:center; left:75px; top:2px; color: #d06444">
+        <th mat-cell style="font-family: Arial">{{('label.total' | translate) + ': '}}</th>
+          <th style="position:center; color: #6c6b6a;font-family: Arial"> {{ total | number:'1.2-2'}} Bs. // {{ totalDe | number:'1.2-2'}} Bs. de depreciación total</th>
+
+      </div>
+    </div>
+  
+    <!-- Sin registros -->
+    <div class="row" *ngIf="listRegistriesFiltered.length == 0" >
+      <div class="col-12 text-center">
+        <span>{{'label.no.registries' | translate}}</span>
+      </div>
+    </div>
+    <div>
+
+
+</div>
+</div>
+<button class="btn btn-primary" type="button" *ngIf="this.atService.admin.includes(this.newUser)" (click)="exportexcel()">Exportar a Excel</button>
+<button class="btn btn-primary" type="button" *ngIf="this.atService.admin.includes(this.newUser)" (click)="addBackup()">Crear backup</button>
+
+
+
+
+    <div class="row" *ngIf="listRegistriesFiltered.length > 0" id="tablaRegistros">
+      
+      <div class="col-12">
+
+        <div class="row m-0" [ngStyle]="{'color' : registry.estado == 'Baja' ? 'red':'black'}" 
+          *ngFor="let registry of listRegistriesFiltered | paginate: {itemsPerPage: itemsRegistries, currentPage: page}">
+          <div class="col-12 registry mb-2">
+
+            <div class="row" >
+              <div class="col-12 date-actions rounded-top border-top border-left border-right">
+
+                <div class="row">
+                  <!-- Fecha -->
+                  <div class="col-xl-11 col-lg-10 col-9" >
+                    <th style="font-family: Russo One">{{registry.date | date: "longDate"}}</th>
+                  </div>
+                  <!-- Iconos de accion -->
+                  <div class="row justify-content-end" *ngIf="this.atService.admin.includes(this.newUser)" style="color: #ffffff">
+                    <a target="_blank"><i class="fa fa-id-card-o" data-title="Reasignar" style="background-color: #00d4ff" (click)="openAsignationDetail(registry)"></i></a>
+                    <a target="_blank"><i class="fa fa-pencil" style="background-color: #00d4ff" data-title="Editar" (click)="openEditDetail(registry)"></i></a>
+                    <a target="_blank"><i class="fa fa-trash" style="background-color: #00d4ff;" data-title="Borrar" (click)=" removeRegistry(registry)"></i></a>          
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="row"  >
+              <div class="col-12 rounded-left rounded-right border-bottom border-right border-left">
+
+                <div class="row">       
+                  
+                  <div class="col-4 p-3" >
+                    <th class="title-field d-block">{{'label.invoice' | translate}}</th>
+                    <th class="d-block">{{registry.invoice}}</th>
+                  </div>
+                  <div class="col-4 p-3" >
+                    <th class="title-field d-block">{{'label.provider' | translate}}</th>
+                    <th class="d-block">{{registry.provider}}</th>
+                  </div>
+                  <div class="col-4 p-3" *ngIf="registry.idActivofijo ==='Terrenos' &&registry.idActivofijo ==='Edificaciones'">
+                    <th class="title-field d-block">{{'label.internalcode' | translate}}</th>
+                    <th class="d-block">{{registry.internalcode}}</th>
+                  </div>
+                  <div class="col-4 p-3">
+                    <th class="title-field d-block">{{'label.ubication' | translate}}</th>
+                    <th class="d-block">{{registry.ubication}}</th>
+                  </div>
+                  <div class="col-4 p-3" *ngIf="registry.idActivofijo ==='Vehículos'">
+                    <th class="title-field d-block"  >{{'label.ruat' | translate}}</th>
+                    <th class="d-block">{{registry.ruat}}</th>
+                  </div>
+                  <div class="col-4 p-3" *ngIf="registry.idActivofijo ==='Vehículos'">
+                    <th class="title-field d-block"  >{{'label.licenseplate' | translate}}</th>
+                    <th class="d-block">{{registry.licenseplate}}</th>
+                  </div>
+                  <div class="col-4 p-3" *ngIf="registry.idActivofijo ==='Vehículos'">
+                    <th class="title-field d-block"  >{{'label.typeofvehicle' | translate}}</th>
+                    <th class="d-block">{{registry.typeofvehicle}}</th>
+                  </div>
+                  <div class="col-4 p-3" *ngIf="registry.idActivofijo ==='Vehículos'">
+                    <th class="title-field d-block"  >{{'label.brand' | translate}}</th>
+                    <th class="d-block">{{registry.marca}}</th>
+                  </div>
+                  <div class="col-4 p-3" *ngIf="registry.idActivofijo ==='Vehículos'">
+                    <th class="title-field d-block"  >{{'label.color' | translate}}</th>
+                    <th class="d-block">{{registry.color}}</th>
+                  </div>
+                  <div class="col-4 p-3" *ngIf="registry.idActivofijo ==='Vehículos'">
+                    <th class="title-field d-block"  >{{'label.chassis' | translate}}</th>
+                    <th class="d-block">{{registry.chassis}}</th>
+                  </div>
+                  <div class="col-4 p-3" *ngIf="registry.idActivofijo ==='Vehículos'">
+                    <th class="title-field d-block"  >{{'label.model' | translate}}</th>
+                    <th class="d-block">{{registry.model}}</th>
+                  </div>
+                    <div class="col-4 p-3" *ngIf="registry.idActivofijo !=='Terrenos'&&registry.idActivofijo!=='Edificaciones'">
+                      <th class="title-field d-block">qrcode information</th>
+                      <th class="d-block">{{registry.qrcode}}</th>
+                    </div>
+                  <div class="col-4 p-3">
+                  <th class="title-field d-block" accept=".jpeg,.jpg,.png,.svg">{{'label.imagePost' | translate}}</th>
+  <br />
+
+  <img [src]="registry.imagePost"  onerror="this.onerror=null;this.src='assets/noimage.jpg';"  width="205px" height="100px"/>
+
+  <br />
+
+  <br />
+
+
+                  </div>
+
+
+
+
+
+                  <div class="col-4 p-3" *ngIf="registry.idActivofijo!=='Terrenos'">
+                    <th class="title-field d-block">{{'label.depreciation' | translate}}</th>
+                    <th class="d-block">{{registry.depreciation | number:'1.2-2'}}</th>
+                  </div>
+                  <div class="col-4 p-3" >
+                    <th class="title-field d-block">{{'label.date' | translate}}</th>
+                    <th class="d-block">{{registry.date | date: "longDate"}}</th>
+                  </div>
+                  <div class="col-4 p-3">
+                    <th class="title-field d-block">{{'label.branch' | translate}}</th>
+                    <th class="d-block">{{registry.agencia}}</th>
+                  </div>
+                  <div class="col-4 p-3">
+                    <th class="title-field d-block" [ngStyle]="{'color' : registry.estado == 'Baja' ? 'red':'#003e81'}">{{'label.estado' | translate}}</th>
+                    <th class="d-block" style="color: #ff0000">{{registry.estado}}</th>
+                  </div>
+                  <div class="col-4 p-3" >
+                    <th class="title-field d-block">{{'label.responsable' | translate}}</th>
+                    <th class="d-block" Id="responsable">{{registry.responsable}}</th>
+                  </div>
+                  <div class="col-4 p-3" >
+                    <th class="title-field d-block">{{'label.assettype' | translate}}</th>
+                    <th class="d-block" Id="Asset">{{registry.idActivofijo}}</th>
+                  </div>
+                  <div class="col-4 p-3" >
+                    <th class="title-field d-block">{{'label.authNumber' | translate}}</th>
+                    <th class="d-block" Id="authNumber">{{registry.authNumber}}</th>
+                  </div>
+                  <div class="col-4 p-3" >
+                    <th class="title-field d-block">{{'label.fiscal' | translate}}</th>
+                    <th class="d-block" Id="fiscal">{{registry.fiscal}}</th>
+                  </div>
+                  <!-- Precio -->
+                  <div class="col-4 p-3">
+                    <th class="title-field d-block">{{'label.price' | translate}}</th>
+                    <th class="d-block"
+                      [ngClass]="{'text-danger': registry.type==='expense'}">{{registry.precio | currency:"Bs":"symbol"}} </th>
+                  </div>
+
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  
+    <!-- Paginacion -->
+    <div class="row" *ngIf="itemsRegistries < listRegistriesFiltered.length">
+      <div class="col-12 mt-2 text-center">
+        <pagination-controls (pageChange)="page = $event" [previousLabel]="'label.previous' | translate"
+          [nextLabel]="'label.next' | translate"></pagination-controls>
+      </div>
+    </div>
+
+  
+
+
+<!-- Spinner -->
+<app-spinner [hideSpinner]="showResume"></app-spinner>
+
+<!-- Templates -->
+
+<ng-template #modal_confirm_delete let-modal>
+
+  <div class="modal-header">
+    <h5 class="modal-title">{{'label.confirm' | translate}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close('no')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {{'label.confirm.delete.registry' | translate}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" style="color: rgb(0, 0, 0)"(click)="modal.close('yes')">{{'label.yes' | translate}}</button>
+    <button type="button" class="btn btn-outline-dark" style="color: rgb(0, 0, 0)" (click)="modal.close('no')">{{'label.no' | translate}}</button>
+  </div>
+
+</ng-template>
+
+<ng-template #modal_responsable let-modal>
+ 
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+   </div> 
+  <div class="modal-body" style="margin-top: 0px;">
+    
+  <form detail-content [formGroup]="formRegistry" (ngSubmit)="Assignation()" name="Activos">
+    <div class="col-12 mb-2" >    
+      <label for="responsable" style="color: #534d4d; font-family: Arial;">{{'label.asignation' | translate}}</label>
+      <label style="color: #ff0000; font-family: Arial; margin-left: 5px"> * </label>
+      <input (keyup.esc)="closeDetail()" style="background-color:  white" type="text" name="responsable" formControlName="responsable" class="form-control" id="responsable"
+      >
+      <small [class.d-none]="responsable.valid || responsable.untouched" style="color:#ff0000">Responsable campo requerido</small>
+      <div class="valid-feedback">
+        <span>{{'label.correct' | translate}}</span>
+      </div>
+      
+    </div>
+    <div class="row form-group">
+      <div class="col-12">    
+        <button type="submit"    
+          class="btn btn-block btn-primary" style="font-family: Arial; background-color: #3076e8" (click)="Assignation()" (keyup.enter)="registrySelected ? 'label.edit.registry' :'label.add.asset'">
+          {{ (registrySelected ? 'label.edit.registry' :'label.add.asset') | translate}}</button>
+          
+      </div>
+
+    </div>
+  </form>
+  </div>
+
+</ng-template>
+
+<ng-template #modal_asignation_success let-modal>
+
+  <div class="modal-header">
+    <h5 class="modal-title">{{'label.success' | translate}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {{'label.asignation.registry.success' | translate}}
+  </div>
+
+</ng-template>
+
+<ng-template #modal_success let-modal>
+
+  <div class="modal-header">
+    <h5 class="modal-title">{{'label.success' | translate}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Se creo backup exitosamente
+  </div>
+
+</ng-template>
+
+<ng-template #modal_error let-modal>
+
+  <div class="modal-header">
+    <h5 class="modal-title">{{'label.error' | translate}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close($event)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Usuario no autorizado
+  </div>
+
+</ng-template>

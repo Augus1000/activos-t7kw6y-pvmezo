@@ -1,0 +1,233 @@
+<div class="row" id="header">
+<div class="col-12">
+
+  <!-- Nombre de la app -->
+  <div class="row">
+    <div class="col-12 text-center text-light mt-4 mb-4">
+
+      <h1 style="color: #ffffff; font-family: Arial; font-weight: bold; font-size: 40px;">{{'label.name.app' | translate}}</h1>
+
+    </div>
+    <div class="brand_logo_container">
+      <img width="75" [src]="config.logoLogin" class="brand_logo" alt="Logo" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-sm navbar-light">
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+          aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+          <ul class="navbar-nav m-auto mt-2 mt-lg-0">
+            <!-- Link Resume -->
+            <li class="nav-item" [routerLink]="['/resume']" routerLinkActive="router-link-active">
+              <a class="nav-link" style="color: #fffdfd;font-family: Arial; font-size: 17px;">{{'label.resume' | translate}} </a>
+            </li>
+            <li class="nav-item" *ngIf="this.atService.admin.includes(this.newUser)"(click)="open(content)">
+              <a  class="nav-link" style="color:  #fffdfd;font-family: Arial; font-size: 17px;">{{'label.add.user' | translate}} </a>
+            </li>
+
+
+            <li class="nav-item" *ngIf="this.atService.admin.includes(this.newUser)" (click)="openDetail('')">
+              <a  class="nav-link" style="color:  #fffdfd;font-family: Arial; font-size: 17px;">{{'label.add.asset' | translate}} </a>
+            </li>
+            <style> 
+              @media print{
+                
+                /* Hide every other element */
+                header *{
+                  visibility: hidden;
+                }
+                body *{
+                  visibility: hidden;
+                  
+                }
+                /*then displaying print container elements*/
+                .print-container, .print-container, #printDateTime *{
+                  visibility: visible;
+                  display: block;
+                  
+                  
+                  
+                }
+                 
+  
+}
+              
+              </style>
+             <li class="nav-item" *ngIf="this.atService.admin.includes(this.newUser)" onclick="window.print();">
+              <a class="nav-link" style="color:  #fffdfd;font-family: Arial; font-size: 17px;">{{'label.printData' | translate}}</a>
+            </li>
+            <!-- Link graficos -->
+            <li class="nav-item"  [routerLink]="['/graphics']" routerLinkActive="router-link-active">
+              <a class="nav-link" style="color:  #fffdfd;font-family: Arial; font-size: 17px;">{{'label.graphics' | translate}}</a>
+            </li>
+
+
+            <!-- Logout -->
+            <li class="nav-item" (click)="logout()">
+              <a class="nav-link" style="color:  #fffdfd;font-family: Arial; font-size: 17px;">{{'label.logout' | translate}}</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <ng-template #content let-modal>
+        <div class="modal-header">
+          
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" >
+          <form [formGroup]="formCreateAccount" (ngSubmit)="addUser(registry)">
+
+            <!-- Email -->
+            <div class="row form-group" style="margin-top: 35px;">
+              <div class="col-12">
+                <label for="email" style="color: #487aca; font-family: Russo One">{{'label.user' | translate}}</label>
+                
+                <input type="email" formControlName="email" class="form-control" id="email"
+                  [ngClass]="{'is-valid': email.dirty && !email.errors, 'is-invalid': email.dirty && email.errors}">
+                
+                <div class="invalid-feedback">
+                  <span *ngIf="email.errors?.email">{{'label.invalid.email' | translate}}</span>
+                  <span *ngIf="email.errors?.required">{{'label.required' | translate}}</span>
+                </div>
+              </div>
+            </div>
+         
+            <!-- Password -->
+            <div class="row form-group">
+              <div class="col-12">
+                <label for="password" style="color: #487aca; font-family: Russo One">{{'label.pass' | translate}}</label>
+                <div class="input-group">
+                <input [type]="fieldTextType ? 'text' : 'password'" type="password" formControlName="pass" class="form-control" id="pass"
+                  [ngClass]="{'is-valid': pass.dirty && !pass.errors}">
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i
+                        class="fa"
+                        [ngClass]="{
+                          'fa-eye-slash': !fieldTextType,
+                          'fa-eye': fieldTextType
+                        }"
+                        (click)="toggleFieldTextType()"
+                      ></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="valid-feedback">
+                  <span>{{'label.correct' | translate}}</span>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Confirmar password -->
+            <div class="row form-group">
+              <div class="col-12">
+                <label for="confirm-pass" style="color: #487aca; font-family: Russo One">{{'label.confirm.pass' | translate}}</label>
+                <div class="input-group">
+                <input [type]="fieldTextType ? 'text' : 'password'" type="password" formControlName="confirmPass" class="form-control" id="confirm-pass"
+                  [ngClass]="{'is-valid': confirmPass.dirty && !formCreateAccount.errors, 'is-invalid': confirmPass.dirty && (confirmPass.errors || formCreateAccount.errors)}">
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <i
+                        class="fa"
+                        [ngClass]="{
+                          'fa-eye-slash': !fieldTextType,
+                          'fa-eye': fieldTextType
+                        }"
+                        (click)="toggleFieldTextType()"
+                      ></i>
+                    </span>
+                  </div>
+                <div class="valid-feedback">
+                  <span>{{'label.correct' | translate}}</span>
+                </div>
+                <div class="invalid-feedback">
+                  <span class="d-block" *ngIf="confirmPass.errors?.required">{{'label.required' | translate}}</span>
+                  <span class="d-block" *ngIf="formCreateAccount.errors?.confirmPassword">{{'label.error.confirm' | translate}}</span>
+                </div>
+              </div>
+            </div>
+          </div>   
+           
+            <form>
+              <label style="color: #487aca; font-family: Russo One" >Contraseña aleatoria Generada</label>
+              <input class="form-control" id="passwordOutput" #passwordOutput value="{{newPassword}}" />
+              <input class="form-control" type="range" (change)="updatePasswordLength($event)" min="4" max="32" step="1" value="{{passwordLenght}}" />
+              <input class="form-control" type="text" value="{{passwordLenght}}" />
+        
+              <div class="flex">
+                <span *ngFor="let checkbox of checkboxes">
+                  <input class="form-control" type="checkbox" (change)="updateCheckboxValue($event)" id="{{checkbox.id}}" [checked]="checkbox.checked" />
+                  <label for="{{checkbox.id}}">{{checkbox.label}}</label>
+                </span>
+              </div>
+        
+              <button class="btn btn-block btn-primary"  style="background-color: #487aca; font-family: Russo One" (click)="generatePassword()">{{buttonLabel}}</button>
+            </form>
+          
+            <div class="row form-group">
+              <div class="col-12">
+                <button class="btn btn-block btn-primary"  style="background-color: #487aca; font-family: Russo One" [disabled]="formCreateAccount.invalid" type="submit">
+                  {{'label.create.user' | translate}}
+                </button>
+              </div>
+            </div>
+  
+          
+  
+          </form>
+        </div>
+       
+      </ng-template>
+      
+      
+      
+      <hr>
+      
+      
+      
+    </div>
+  </div>
+
+</div>
+</div>
+<ng-template #modal_success let-modal>
+
+<div class="modal-header">
+  <h5 class="modal-title">{{'label.user.success' | translate}}</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+</ng-template>
+<ng-template #modal_error let-modal>
+
+<div class="modal-header">
+  <h5 class="modal-title">{{'label.error' | translate}}</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  {{'label.unauthorized.error' | translate}}
+</div>
+
+</ng-template>
+
+<!-- Detalle para añadir un registro -->
+<app-add-registry *ngIf="showDetail"
+[typeRegistry]="typeRegistry"
+[registrySelected]="registrySelected"
+[listRegistries]="listRegistries"
+(close)="closeDetail($event)">
+</app-add-registry>

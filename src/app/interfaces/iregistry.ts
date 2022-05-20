@@ -1,0 +1,35 @@
+import { Activofijo } from '../models/activofijo';
+
+export interface IRegistry {
+    id?: any,
+    
+    idActivofijo: any,
+    activofijo: Activofijo,
+    type: string,
+    date: any,
+    precio:any,
+    catastralcode: any,
+    ruat: string,
+    serialnumber: any,
+    internalcode: any,
+    depreciation: any,
+    ubication: string,
+    responsable: any,
+    licenseplate:any,
+    typeofvehicle:string,
+    marca: string,
+    color: string,
+    chassis:any,
+    model: any,
+    user: any,
+    invoice:number,
+    provider:any,
+    fiscal:any,
+    authNumber:any,
+    agencia:any,
+    nombre: string,
+    imagePost: any,
+    qrcode:any,
+    estado:any,
+    
+}
